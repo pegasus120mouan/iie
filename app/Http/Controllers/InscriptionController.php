@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\InscriptionAdminNotification;
 use App\Mail\InscriptionConfirmation;
 use App\Models\Formation;
+use App\Models\FeaturedPopup;
 use App\Models\Inscription;
 use App\Support\Honeypot;
 use Illuminate\Http\Request;
@@ -15,10 +16,58 @@ class InscriptionController extends Controller
 {
     public function create(Request $request)
     {
-        $formations = Formation::where('is_active', true)->orderBy('name')->get();
+        $formations = Formation::publicCatalog()->where('is_active', true)->orderBy('name')->get();
         $selectedFormation = $request->get('formation');
+        $formationLocked = false;
+        $featuredPopupId = null;
+        $promotion = null;
 
-        return view('pages.inscription', compact('formations', 'selectedFormation'));
+        if (old('featured_popup_id')) {
+            $popup = FeaturedPopup::with('formation')->find(old('featured_popup_id'));
+            if ($popup && (int) $popup->formation_id === (int) old('formation_id', $selectedFormation)) {
+                $formationLocked = true;
+                $featuredPopupId = $popup->id;
+                $selectedFormation = $popup->formation_id;
+                $promotion = $popup;
+            }
+        } elseif ($request->query('from') === 'featured') {
+            $activePopup = FeaturedPopup::active();
+            if ($activePopup?->formation_id && (int) $selectedFormation === (int) $activePopup->formation_id) {
+                $formationLocked = true;
+                $featuredPopupId = $activePopup->id;
+                $promotion = $activePopup;
+            }
+        }
+
+        return view('pages.inscription', compact(
+            'formations',
+            'selectedFormation',
+            'formationLocked',
+            'featuredPopupId',
+            'promotion',
+        ));
+    }
+
+    public function createFromFeatured(string $slug)
+    {
+        $promotion = FeaturedPopup::with('formation')->where('slug', $slug)->firstOrFail();
+
+        if (! $promotion->formation_id) {
+            abort(404);
+        }
+
+        $formations = Formation::publicCatalog()->where('is_active', true)->orderBy('name')->get();
+        $selectedFormation = $promotion->formation_id;
+        $formationLocked = true;
+        $featuredPopupId = $promotion->id;
+
+        return view('pages.inscription', compact(
+            'formations',
+            'selectedFormation',
+            'formationLocked',
+            'featuredPopupId',
+            'promotion',
+        ));
     }
 
     public function store(Request $request)
@@ -31,7 +80,6 @@ class InscriptionController extends Controller
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'prenoms' => 'required|string|max:255',
-            'date_naissance' => 'required|date|before:today',
             'sexe' => 'required|in:M,F',
             'telephone' => 'required|string|max:20',
             'whatsapp' => 'nullable|string|max:20',
@@ -39,14 +87,26 @@ class InscriptionController extends Controller
             'adresse' => 'required|string|max:500',
             'niveau_etude' => 'required|string|max:255',
             'formation_id' => 'required|exists:formations,id',
+            'featured_popup_id' => 'nullable|exists:featured_popups,id',
         ]);
+
+        $featuredPopupId = null;
+        if (! empty($validated['featured_popup_id'])) {
+            $popup = FeaturedPopup::find($validated['featured_popup_id']);
+            if (! $popup || (int) $popup->formation_id !== (int) $validated['formation_id']) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['formation_id' => 'La formation sélectionnée ne correspond pas à la promotion en cours.']);
+            }
+            $featuredPopupId = $popup->id;
+        }
 
         $inscription = Inscription::create([
             'numero_dossier' => Inscription::generateNumeroDossier(),
             'formation_id' => $validated['formation_id'],
+            'featured_popup_id' => $featuredPopupId,
             'nom' => $validated['nom'],
             'prenoms' => $validated['prenoms'],
-            'date_naissance' => $validated['date_naissance'],
             'sexe' => $validated['sexe'],
             'telephone' => $validated['telephone'],
             'whatsapp' => $validated['whatsapp'] ?? null,

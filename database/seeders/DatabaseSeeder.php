@@ -80,6 +80,8 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        Formation::promotion();
+
         $temoignages = [
             ['name' => 'Aminata Koné', 'formation' => 'Cybersécurité', 'content' => 'La formation en cybersécurité à l\'IIE a transformé ma carrière. Les formateurs sont experts et le matériel est de qualité internationale.'],
             ['name' => 'Kouassi Jean', 'formation' => 'Développement Web', 'content' => 'Grâce à l\'IIE, j\'ai décroché un poste de développeur full-stack dans une multinationale. La pédagogie pratique fait toute la différence.'],

@@ -4,13 +4,18 @@
 
 @section('content')
 <x-page-hero
-    title="Inscription en ligne"
-    subtitle="Complétez le formulaire ci-dessous pour rejoindre l'International Institute of Excellence"
+    title="{{ $promotion?->title ?? 'Inscription en ligne' }}"
+    subtitle="{{ $promotion ? 'Inscrivez-vous à cette formation promotionnelle de l\'International Institute of Excellence' : 'Complétez le formulaire ci-dessous pour rejoindre l\'International Institute of Excellence' }}"
     :breadcrumbs="[['label' => 'Accueil', 'url' => route('home')], ['label' => 'Inscription']]"
 />
 
 <section class="page-section section-alt">
   <div class="container mx-auto px-4 max-w-3xl">
+    @if($promotion ?? null)
+      <div class="mb-8 text-center" data-aos="fade-up">
+        <img src="{{ $promotion->image_url }}" alt="{{ $promotion->title ?? 'Formation en vue' }}" class="max-h-72 mx-auto rounded-2xl shadow-lg border border-primary/10">
+      </div>
+    @endif
     <form action="{{ route('inscription.store') }}" method="POST" class="form-card" data-aos="fade-up">
       @csrf
       <x-honeypot />
@@ -30,11 +35,6 @@
           <label class="form-label">Prénoms *</label>
           <input type="text" name="prenoms" value="{{ old('prenoms') }}" class="form-input" required>
           @error('prenoms')<p class="alert-error mt-2 !py-2">{{ $message }}</p>@enderror
-        </div>
-        <div>
-          <label class="form-label">Date de naissance *</label>
-          <input type="date" name="date_naissance" value="{{ old('date_naissance') }}" class="form-input" required>
-          @error('date_naissance')<p class="alert-error mt-2 !py-2">{{ $message }}</p>@enderror
         </div>
         <div>
           <label class="form-label">Sexe *</label>
@@ -83,12 +83,27 @@
         </div>
         <div>
           <label class="form-label">Formation choisie *</label>
-          <select name="formation_id" class="form-input" required>
-            <option value="">Sélectionner une formation</option>
-            @foreach($formations as $f)
-              <option value="{{ $f->id }}" {{ (old('formation_id', $selectedFormation) == $f->id) ? 'selected' : '' }}>{{ $f->name }}</option>
-            @endforeach
-          </select>
+          @if($formationLocked)
+            <input type="hidden" name="formation_id" value="{{ $selectedFormation }}">
+            <input type="hidden" name="featured_popup_id" value="{{ $featuredPopupId }}">
+            <select class="form-input form-input-disabled" disabled aria-disabled="true">
+              @foreach($formations as $f)
+                @if($f->id == $selectedFormation)
+                  <option value="{{ $f->id }}" selected>{{ $f->name }}</option>
+                @endif
+              @endforeach
+            </select>
+            <p class="text-sm text-slate mt-2">
+              <i class="fas fa-bullhorn text-gold mr-1"></i>Formation issue de la promotion « Formation en vue »
+            </p>
+          @else
+            <select name="formation_id" class="form-input" required>
+              <option value="">Sélectionner une formation</option>
+              @foreach($formations as $f)
+                <option value="{{ $f->id }}" {{ (old('formation_id', $selectedFormation) == $f->id) ? 'selected' : '' }}>{{ $f->name }}</option>
+              @endforeach
+            </select>
+          @endif
           @error('formation_id')<p class="alert-error mt-2 !py-2">{{ $message }}</p>@enderror
         </div>
       </div>

@@ -15,7 +15,7 @@
         <h3 class="text-lg font-bold mb-6">Informations personnelles</h3>
         <dl class="grid md:grid-cols-2 gap-4 text-sm">
             <div><dt class="text-gray-500">Nom complet</dt><dd class="font-semibold">{{ $inscription->full_name }}</dd></div>
-            <div><dt class="text-gray-500">Date de naissance</dt><dd>{{ $inscription->date_naissance->format('d/m/Y') }}</dd></div>
+            <div><dt class="text-gray-500">Date de naissance</dt><dd>{{ $inscription->date_naissance?->format('d/m/Y') ?? '—' }}</dd></div>
             <div><dt class="text-gray-500">Sexe</dt><dd>{{ $inscription->sexe === 'M' ? 'Masculin' : 'Féminin' }}</dd></div>
             <div><dt class="text-gray-500">Téléphone</dt><dd>{{ $inscription->telephone }}</dd></div>
             <div><dt class="text-gray-500">WhatsApp</dt><dd>{{ $inscription->whatsapp ?? '-' }}</dd></div>
@@ -23,6 +23,12 @@
             <div class="md:col-span-2"><dt class="text-gray-500">Adresse</dt><dd>{{ $inscription->adresse }}</dd></div>
             <div><dt class="text-gray-500">Niveau d'étude</dt><dd>{{ $inscription->niveau_etude }}</dd></div>
             <div><dt class="text-gray-500">Formation</dt><dd class="font-semibold text-gold">{{ $inscription->formation->name }}</dd></div>
+            @if($inscription->featured_popup_id)
+                <div class="md:col-span-2">
+                    <dt class="text-gray-500">Source</dt>
+                    <dd><span class="badge-status badge-pending">Formation en vue</span></dd>
+                </div>
+            @endif
         </dl>
     </div>
 

@@ -10,7 +10,7 @@ class FormationController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Formation::with('category')->where('is_active', true);
+        $query = Formation::with('category')->publicCatalog()->where('is_active', true);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -33,11 +33,13 @@ class FormationController extends Controller
     public function show(string $slug)
     {
         $formation = Formation::with('category')
+            ->publicCatalog()
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
 
-        $related = Formation::where('category_id', $formation->category_id)
+        $related = Formation::publicCatalog()
+            ->where('category_id', $formation->category_id)
             ->where('id', '!=', $formation->id)
             ->where('is_active', true)
             ->take(3)

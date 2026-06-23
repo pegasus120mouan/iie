@@ -19,6 +19,7 @@
             @foreach([
                 ['route' => 'admin.dashboard', 'icon' => 'fa-chart-pie', 'label' => 'Dashboard'],
                 ['route' => 'admin.formations.index', 'icon' => 'fa-graduation-cap', 'label' => 'Formations'],
+                ['route' => 'admin.featured-popups.index', 'icon' => 'fa-window-restore', 'label' => 'Formation en vue'],
                 ['route' => 'admin.inscriptions.index', 'icon' => 'fa-user-graduate', 'label' => 'Inscriptions'],
                 ['route' => 'admin.actualites.index', 'icon' => 'fa-newspaper', 'label' => 'Actualités'],
                 ['route' => 'admin.temoignages.index', 'icon' => 'fa-quote-left', 'label' => 'Témoignages'],
@@ -26,7 +27,7 @@
                 ['route' => 'admin.contacts.index', 'icon' => 'fa-envelope', 'label' => 'Contacts'],
                 ['route' => 'admin.users.index', 'icon' => 'fa-users-cog', 'label' => 'Utilisateurs'],
             ] as $item)
-                <a href="{{ route($item['route']) }}" class="admin-nav-link {{ request()->routeIs(str_replace('.index', '.*', $item['route'])) || request()->routeIs($item['route']) ? 'admin-nav-link-active' : '' }}">
+                <a href="{{ route($item['route']) }}" class="admin-nav-link {{ request()->routeIs(str_replace('.index', '.*', $item['route'])) || request()->routeIs($item['route']) || ($item['route'] === 'admin.featured-popups.index' && request()->routeIs('admin.featured-popups.*')) ? 'admin-nav-link-active' : '' }}">
                     <i class="fas {{ $item['icon'] }} w-5"></i>{{ $item['label'] }}
                 </a>
             @endforeach
@@ -49,5 +50,6 @@
         @endif
         @yield('content')
     </main>
+    @stack('scripts')
 </body>
 </html>

@@ -24,6 +24,7 @@
                 <th>N° Dossier</th>
                 <th>Nom</th>
                 <th>Formation</th>
+                <th>Source</th>
                 <th>Email</th>
                 <th>Statut</th>
                 <th>Date</th>
@@ -35,6 +36,13 @@
                     <td class="font-semibold text-gold">{{ $ins->numero_dossier }}</td>
                     <td class="font-medium text-navy">{{ $ins->full_name }}</td>
                     <td>{{ $ins->formation->name }}</td>
+                    <td>
+                        @if($ins->featured_popup_id)
+                            <span class="badge-status badge-pending text-xs">Formation en vue</span>
+                        @else
+                            <span class="text-slate">—</span>
+                        @endif
+                    </td>
                     <td class="text-slate">{{ $ins->email }}</td>
                     <td><span class="badge-status badge-pending">{{ $ins->statut }}</span></td>
                     <td class="text-slate">{{ $ins->created_at->format('d/m/Y') }}</td>

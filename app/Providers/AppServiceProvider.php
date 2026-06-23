@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\FeaturedPopup;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -51,6 +53,14 @@ class AppServiceProvider extends ServiceProvider
             $token = $request->bearerToken() ?? $request->header('X-API-Token') ?? 'anonymous';
 
             return Limit::perMinute(60)->by($token.'|'.$request->ip());
+        });
+
+        View::composer('layouts.app', function ($view) {
+            $popup = request()->routeIs('inscription.*', 'formation-en-vue.inscription')
+                ? null
+                : FeaturedPopup::active();
+
+            $view->with('siteFeaturedPopup', $popup);
         });
     }
 }

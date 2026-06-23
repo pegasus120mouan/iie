@@ -32,6 +32,8 @@
 
     @include('partials.footer')
 
+    <x-featured-popup :popup="$siteFeaturedPopup ?? null" />
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>AOS.init({ duration: 800, once: true, offset: 50 });</script>
     @stack('scripts')

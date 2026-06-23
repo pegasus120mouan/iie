@@ -88,4 +88,28 @@ document.addEventListener('DOMContentLoaded', () => {
             slides[current].classList.add('active');
         }, 6000);
     }
+
+    // Popup Formation en vue — réapparaît à chaque chargement / actualisation de page
+    const featuredPopup = document.getElementById('featured-popup');
+    if (featuredPopup) {
+        const closeFeaturedPopup = () => {
+            featuredPopup.classList.add('hidden');
+            document.body.classList.remove('featured-popup-open');
+        };
+
+        featuredPopup.querySelectorAll('[data-close-popup]').forEach((el) => {
+            el.addEventListener('click', () => {
+                closeFeaturedPopup();
+            });
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !featuredPopup.classList.contains('hidden')) {
+                closeFeaturedPopup();
+            }
+        });
+
+        featuredPopup.classList.remove('hidden');
+        document.body.classList.add('featured-popup-open');
+    }
 });

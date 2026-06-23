@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Inscription extends Model
 {
     protected $fillable = [
-        'numero_dossier', 'formation_id', 'nom', 'prenoms', 'date_naissance',
+        'numero_dossier', 'formation_id', 'featured_popup_id', 'nom', 'prenoms', 'date_naissance',
         'sexe', 'telephone', 'whatsapp', 'email', 'adresse', 'niveau_etude',
         'photo', 'piece_identite', 'statut', 'notes',
     ];
@@ -24,6 +24,11 @@ class Inscription extends Model
     public function formation(): BelongsTo
     {
         return $this->belongsTo(Formation::class);
+    }
+
+    public function featuredPopup(): BelongsTo
+    {
+        return $this->belongsTo(FeaturedPopup::class);
     }
 
     public function paiements(): HasMany
