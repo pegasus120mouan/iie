@@ -18,4 +18,5 @@ return [
         'instagram' => env('IIE_INSTAGRAM', '#'),
         'youtube' => env('IIE_YOUTUBE', '#'),
     ],
+    'api_token' => env('IIE_API_TOKEN'),
 ];
