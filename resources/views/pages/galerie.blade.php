@@ -3,12 +3,11 @@
 @section('title', 'Galerie')
 
 @section('content')
-<section class="page-hero pt-32 pb-20">
-  <div class="container mx-auto px-4 text-center" data-aos="fade-up">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">Galerie</h1>
-    <p class="text-xl text-slate">Photos, vidéos et activités de l'IIE</p>
-  </div>
-</section>
+<x-page-hero
+    title="Galerie"
+    subtitle="Photos, vidéos et moments forts de la vie à l'IIE"
+    :breadcrumbs="[['label' => 'Accueil', 'url' => route('home')], ['label' => 'Galerie']]"
+/>
 
 <section class="filter-bar">
   <div class="container mx-auto px-4 flex flex-wrap justify-center gap-3">
@@ -18,24 +17,31 @@
   </div>
 </section>
 
-<section class="py-16 section-alt">
+<section class="page-section section-alt">
   <div class="container mx-auto px-4">
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      @foreach($galeries as $item)
-        <div class="group relative rounded-2xl overflow-hidden card-shadow aspect-video bg-navy" data-aos="fade-up">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <i class="fas {{ $item->type === 'video' ? 'fa-play-circle' : 'fa-image' }} text-gold text-5xl group-hover:scale-110 transition-transform"></i>
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-navy/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-            <div>
-              <span class="text-gold text-xs font-semibold uppercase">{{ $item->category }}</span>
-              <h3 class="text-white font-bold">{{ $item->title }}</h3>
+    @if($galeries->count())
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach($galeries as $item)
+          <div class="group relative rounded-2xl overflow-hidden card-shadow aspect-video border border-primary/10" data-aos="fade-up">
+            <div class="absolute inset-0 flex items-center justify-center bg-gradient-blue">
+              <i class="fas {{ $item->type === 'video' ? 'fa-play-circle' : 'fa-image' }} text-white text-5xl group-hover:scale-110 transition-transform duration-300"></i>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+              <div>
+                <span class="text-gold text-xs font-bold uppercase tracking-wide">{{ $item->category }}</span>
+                <h3 class="text-white font-bold mt-1">{{ $item->title }}</h3>
+              </div>
             </div>
           </div>
-        </div>
-      @endforeach
-    </div>
-    <div class="mt-12">{{ $galeries->withQueryString()->links() }}</div>
+        @endforeach
+      </div>
+      <div class="pagination-nav">{{ $galeries->withQueryString()->links() }}</div>
+    @else
+      <div class="empty-state">
+        <div class="empty-state-icon"><i class="fas fa-images"></i></div>
+        <p class="text-slate text-lg font-medium">Aucun média pour le moment.</p>
+      </div>
+    @endif
   </div>
 </section>
 @endsection

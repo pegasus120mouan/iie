@@ -7,10 +7,10 @@
         </div>
         <p class="text-slate text-sm leading-relaxed">{{ config('iie.tagline') }}. Formations professionnelles de qualité internationale.</p>
         <div class="flex gap-3 mt-6">
-          <a href="{{ config('iie.social.facebook') }}" class="w-10 h-10 rounded-full bg-primary-light text-navy flex items-center justify-center hover:bg-navy hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
-          <a href="{{ config('iie.social.twitter') }}" class="w-10 h-10 rounded-full bg-primary-light text-navy flex items-center justify-center hover:bg-navy hover:text-white transition"><i class="fab fa-twitter"></i></a>
-          <a href="{{ config('iie.social.linkedin') }}" class="w-10 h-10 rounded-full bg-primary-light text-navy flex items-center justify-center hover:bg-navy hover:text-white transition"><i class="fab fa-linkedin-in"></i></a>
-          <a href="{{ config('iie.social.instagram') }}" class="w-10 h-10 rounded-full bg-primary-light text-navy flex items-center justify-center hover:bg-navy hover:text-white transition"><i class="fab fa-instagram"></i></a>
+          <a href="{{ config('iie.social.facebook') }}" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="{{ config('iie.social.twitter') }}" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="{{ config('iie.social.linkedin') }}" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="{{ config('iie.social.instagram') }}" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
         </div>
       </div>
 

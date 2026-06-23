@@ -8,7 +8,6 @@ use App\Models\Formation;
 use App\Models\Inscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 
 class InscriptionController extends Controller
 {
@@ -33,13 +32,9 @@ class InscriptionController extends Controller
             'adresse' => 'required|string|max:500',
             'niveau_etude' => 'required|string|max:255',
             'formation_id' => 'required|exists:formations,id',
-            'photo' => 'required|image|max:2048',
-            'piece_identite' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
         $validated['numero_dossier'] = Inscription::generateNumeroDossier();
-        $validated['photo'] = $request->file('photo')->store('inscriptions/photos', 'public');
-        $validated['piece_identite'] = $request->file('piece_identite')->store('inscriptions/documents', 'public');
 
         $inscription = Inscription::create($validated);
         $inscription->load('formation');

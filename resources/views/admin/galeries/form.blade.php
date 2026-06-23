@@ -3,8 +3,8 @@
 @section('title', isset($galerie) ? 'Modifier galerie' : 'Ajouter à la galerie')
 
 @section('content')
-<div class="mb-8"><h1 class="text-3xl font-bold text-navy dark:text-white">{{ isset($galerie) ? 'Modifier' : 'Ajouter' }}</h1></div>
-<form action="{{ isset($galerie) ? route('admin.galeries.update', $galerie) : route('admin.galeries.store') }}" method="POST" enctype="multipart/form-data" class="bg-white dark:bg-gray-800 rounded-xl p-8 card-shadow max-w-2xl">
+<div class="mb-8"><h1 class="admin-page-title">{{ isset($galerie) ? 'Modifier' : 'Ajouter' }}</h1></div>
+<form action="{{ isset($galerie) ? route('admin.galeries.update', $galerie) : route('admin.galeries.store') }}" method="POST" enctype="multipart/form-data" class="form-card max-w-2xl">
     @csrf @if(isset($galerie)) @method('PUT') @endif
     <div class="space-y-6">
         <div><label class="form-label">Titre *</label><input type="text" name="title" value="{{ old('title', $galerie->title ?? '') }}" class="form-input" required></div>

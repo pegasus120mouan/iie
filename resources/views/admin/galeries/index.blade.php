@@ -3,21 +3,21 @@
 @section('title', 'Galerie')
 
 @section('content')
-<div class="flex justify-between items-center mb-8">
-    <h1 class="text-3xl font-bold text-navy dark:text-white">Galerie</h1>
+<div class="admin-page-header">
+    <h1 class="admin-page-title">Galerie</h1>
     <a href="{{ route('admin.galeries.create') }}" class="btn-gold"><i class="fas fa-plus mr-2"></i>Ajouter</a>
 </div>
 <div class="grid md:grid-cols-3 gap-6">
     @foreach($galeries as $g)
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-4 card-shadow">
-            <div class="aspect-video bg-navy rounded-lg flex items-center justify-center mb-3">
-                <i class="fas {{ $g->type === 'video' ? 'fa-video' : 'fa-image' }} text-gold text-3xl"></i>
+        <div class="feature-card !p-4">
+            <div class="aspect-video rounded-xl flex items-center justify-center mb-4 bg-gradient-blue">
+                <i class="fas {{ $g->type === 'video' ? 'fa-video' : 'fa-image' }} text-white text-3xl"></i>
             </div>
-            <h4 class="font-semibold">{{ $g->title }}</h4>
-            <p class="text-sm text-gray-500">{{ $g->category }} · {{ $g->type }}</p>
-            <div class="flex gap-2 mt-3">
-                <a href="{{ route('admin.galeries.edit', $g) }}" class="text-blue-500 text-sm"><i class="fas fa-edit"></i> Modifier</a>
-                <form action="{{ route('admin.galeries.destroy', $g) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer ?')">@csrf @method('DELETE')<button class="text-red-500 text-sm"><i class="fas fa-trash"></i></button></form>
+            <h4 class="font-semibold text-navy">{{ $g->title }}</h4>
+            <p class="text-sm text-slate">{{ $g->category }} · {{ $g->type }}</p>
+            <div class="flex gap-3 mt-4">
+                <a href="{{ route('admin.galeries.edit', $g) }}" class="text-navy hover:text-gold text-sm transition"><i class="fas fa-edit"></i> Modifier</a>
+                <form action="{{ route('admin.galeries.destroy', $g) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer ?')">@csrf @method('DELETE')<button class="text-red-500 text-sm hover:text-red-700 transition"><i class="fas fa-trash"></i></button></form>
             </div>
         </div>
     @endforeach

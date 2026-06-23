@@ -3,9 +3,9 @@
 @section('title', isset($actualite) ? 'Modifier actualité' : 'Nouvelle actualité')
 
 @section('content')
-<div class="mb-8"><h1 class="text-3xl font-bold text-navy dark:text-white">{{ isset($actualite) ? 'Modifier' : 'Nouvelle' }} actualité</h1></div>
+<div class="mb-8"><h1 class="admin-page-title">{{ isset($actualite) ? 'Modifier' : 'Nouvelle' }} actualité</h1></div>
 
-<form action="{{ isset($actualite) ? route('admin.actualites.update', $actualite) : route('admin.actualites.store') }}" method="POST" enctype="multipart/form-data" class="bg-white dark:bg-gray-800 rounded-xl p-8 card-shadow max-w-3xl">
+<form action="{{ isset($actualite) ? route('admin.actualites.update', $actualite) : route('admin.actualites.store') }}" method="POST" enctype="multipart/form-data" class="form-card max-w-3xl">
     @csrf @if(isset($actualite)) @method('PUT') @endif
     <div class="space-y-6">
         <div><label class="form-label">Titre *</label><input type="text" name="title" value="{{ old('title', $actualite->title ?? '') }}" class="form-input" required></div>

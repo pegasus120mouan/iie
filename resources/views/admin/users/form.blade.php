@@ -3,8 +3,8 @@
 @section('title', isset($user) ? 'Modifier utilisateur' : 'Nouvel utilisateur')
 
 @section('content')
-<div class="mb-8"><h1 class="text-3xl font-bold text-navy dark:text-white">{{ isset($user) ? 'Modifier' : 'Nouvel' }} utilisateur</h1></div>
-<form action="{{ isset($user) ? route('admin.users.update', $user) : route('admin.users.store') }}" method="POST" class="bg-white dark:bg-gray-800 rounded-xl p-8 card-shadow max-w-2xl">
+<div class="mb-8"><h1 class="admin-page-title">{{ isset($user) ? 'Modifier' : 'Nouvel' }} utilisateur</h1></div>
+<form action="{{ isset($user) ? route('admin.users.update', $user) : route('admin.users.store') }}" method="POST" class="form-card max-w-2xl">
     @csrf @if(isset($user)) @method('PUT') @endif
     <div class="space-y-6">
         <div><label class="form-label">Nom *</label><input type="text" name="name" value="{{ old('name', $user->name ?? '') }}" class="form-input" required></div>

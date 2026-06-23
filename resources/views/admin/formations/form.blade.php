@@ -3,11 +3,9 @@
 @section('title', isset($formation) ? 'Modifier formation' : 'Nouvelle formation')
 
 @section('content')
-<div class="mb-8">
-    <h1 class="text-3xl font-bold text-navy dark:text-white">{{ isset($formation) ? 'Modifier' : 'Nouvelle' }} formation</h1>
-</div>
+<div class="admin-page-header"><h1 class="admin-page-title">{{ isset($formation) ? 'Modifier' : 'Nouvelle' }} formation</h1></div>
 
-<form action="{{ isset($formation) ? route('admin.formations.update', $formation) : route('admin.formations.store') }}" method="POST" enctype="multipart/form-data" class="bg-white dark:bg-gray-800 rounded-xl p-8 card-shadow max-w-3xl">
+<form action="{{ isset($formation) ? route('admin.formations.update', $formation) : route('admin.formations.store') }}" method="POST" enctype="multipart/form-data" class="form-card max-w-3xl">
     @csrf
     @if(isset($formation)) @method('PUT') @endif
 

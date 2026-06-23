@@ -13,11 +13,11 @@
     ];
   @endphp
   @foreach($slides as $i => $slide)
-    <div class="slide hero-slide absolute inset-0 flex items-center {{ $i === 0 ? 'active relative' : 'opacity-0' }} transition-opacity duration-1000" style="background-image: linear-gradient(135deg, rgba(27,95,189,0.75) 0%, rgba(27,95,189,0.45) 50%, rgba(201,162,39,0.25) 100%), url('{{ $slide['image'] }}')">
+    <div class="slide hero-slide hero-slide-overlay absolute inset-0 flex items-center {{ $i === 0 ? 'active relative' : 'opacity-0' }} transition-opacity duration-1000" style="background-image: var(--iie-gradient-hero), url('{{ $slide['image'] }}')">
       <div class="container mx-auto px-4 pt-32 pb-20">
         <div class="max-w-3xl" data-aos="fade-up">
           <span class="inline-block px-4 py-1 bg-white/20 text-white rounded-full text-sm font-medium mb-4 border border-white/30 backdrop-blur-sm">International Institute of Excellence</span>
-          <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">{{ $slide['title'] }}</h1>
+          <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight font-display">{{ $slide['title'] }}</h1>
           <p class="text-xl text-gray-200 mb-8">{{ $slide['subtitle'] }}</p>
           <div class="flex flex-wrap gap-4">
             <a href="{{ route('inscription.create') }}" class="btn-gold text-lg"><i class="fas fa-user-plus mr-2"></i>S'inscrire maintenant</a>
@@ -30,7 +30,7 @@
 </section>
 
 {{-- Présentation --}}
-<section class="py-20 section-light">
+<section class="page-section section-light">
   <div class="container mx-auto px-4">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <div data-aos="fade-right">
@@ -56,7 +56,7 @@
 </section>
 
 {{-- Chiffres clés --}}
-<section class="py-20 section-stats">
+<section class="page-section section-stats">
   <div class="container mx-auto px-4">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
       @foreach([['5000+', 'Étudiants formés', 'fa-users'], ['12+', 'Formations', 'fa-book'], ['95%', 'Taux d\'insertion', 'fa-chart-line'], ['20+', 'Partenaires', 'fa-handshake']] as $stat)
@@ -71,7 +71,7 @@
 </section>
 
 {{-- Pourquoi choisir IIE --}}
-<section class="py-20">
+<section class="page-section">
   <div class="container mx-auto px-4">
     <div class="text-center mb-16" data-aos="fade-up">
       <span class="section-label">Nos atouts</span>
@@ -87,12 +87,12 @@
         ['icon' => 'fa-globe', 'title' => 'Standards internationaux', 'desc' => 'Programmes alignés sur les exigences du marché mondial.'],
         ['icon' => 'fa-users', 'title' => 'Réseau alumni', 'desc' => 'Rejoignez une communauté active de professionnels IT.'],
       ] as $item)
-        <div class="bg-white rounded-2xl p-8 card-shadow transition-all hover:-translate-y-1 border border-primary/5" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
-          <div class="w-14 h-14 bg-primary-light rounded-xl flex items-center justify-center mb-6">
-            <i class="fas {{ $item['icon'] }} text-navy text-2xl"></i>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
+          <div class="icon-box">
+            <i class="fas {{ $item['icon'] }}"></i>
           </div>
-          <h3 class="text-xl font-bold text-navy mb-3">{{ $item['title'] }}</h3>
-          <p class="text-slate">{{ $item['desc'] }}</p>
+          <h3 class="content-heading-sm">{{ $item['title'] }}</h3>
+          <p class="text-slate leading-relaxed">{{ $item['desc'] }}</p>
         </div>
       @endforeach
     </div>
@@ -100,7 +100,7 @@
 </section>
 
 {{-- Formations populaires --}}
-<section class="py-20 section-alt">
+<section class="page-section section-alt">
   <div class="container mx-auto px-4">
     <div class="flex flex-col md:flex-row justify-between items-center mb-12" data-aos="fade-up">
       <div>
@@ -111,29 +111,14 @@
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       @foreach($formations as $formation)
-        <div class="bg-white rounded-2xl overflow-hidden card-shadow group border border-primary/5" data-aos="fade-up">
-          <div class="h-48 card-media relative overflow-hidden">
-            <i class="fas fa-graduation-cap text-white text-5xl group-hover:scale-110 transition-transform relative z-10"></i>
-            <span class="absolute top-4 right-4 bg-gold text-white text-xs font-bold px-3 py-1 rounded-full">{{ $formation->category->name }}</span>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-navy mb-2">{{ $formation->name }}</h3>
-            <p class="text-slate text-sm mb-4">{{ $formation->short_description }}</p>
-            <div class="flex justify-between items-center text-sm text-slate mb-4">
-              <span><i class="far fa-clock mr-1"></i>{{ $formation->duration }}</span>
-            </div>
-            <a href="{{ route('formations.show', $formation->slug) }}" class="text-navy font-semibold hover:text-gold transition">
-              En savoir plus <i class="fas fa-arrow-right ml-1"></i>
-            </a>
-          </div>
-        </div>
+        <x-formation-card :formation="$formation" />
       @endforeach
     </div>
   </div>
 </section>
 
 {{-- Témoignages --}}
-<section class="py-20">
+<section class="page-section">
   <div class="container mx-auto px-4">
     <div class="text-center mb-16" data-aos="fade-up">
       <span class="section-label">Témoignages</span>
@@ -162,7 +147,7 @@
 </section>
 
 {{-- Actualités --}}
-<section class="py-20 section-light">
+<section class="page-section section-light">
   <div class="container mx-auto px-4">
     <div class="flex flex-col md:flex-row justify-between items-center mb-12" data-aos="fade-up">
       <div>
@@ -173,24 +158,14 @@
     </div>
     <div class="grid md:grid-cols-3 gap-8">
       @foreach($actualites as $actu)
-        <article class="bg-white rounded-2xl overflow-hidden card-shadow border border-primary/5" data-aos="fade-up">
-          <div class="h-48 card-media">
-            <i class="fas fa-newspaper text-white text-4xl"></i>
-          </div>
-          <div class="p-6">
-            <span class="text-xs font-semibold text-gold uppercase">{{ $actu->type_label }}</span>
-            <h3 class="text-lg font-bold text-navy mt-2 mb-3">{{ $actu->title }}</h3>
-            <p class="text-slate text-sm mb-4">{{ $actu->excerpt }}</p>
-            <a href="{{ route('actualites.show', $actu->slug) }}" class="text-navy font-semibold hover:text-gold transition">Lire la suite →</a>
-          </div>
-        </article>
+        <x-article-card :article="$actu" />
       @endforeach
     </div>
   </div>
 </section>
 
 {{-- CTA --}}
-<section class="py-20 section-cta relative overflow-hidden">
+<section class="page-section section-cta relative overflow-hidden">
   <div class="absolute inset-0 opacity-10" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=80'); background-size: cover;"></div>
   <div class="container mx-auto px-4 text-center relative z-10" data-aos="zoom-in">
     <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 font-display">Prêt à transformer votre avenir ?</h2>

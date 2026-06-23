@@ -3,8 +3,8 @@
 @section('title', isset($temoignage) ? 'Modifier témoignage' : 'Nouveau témoignage')
 
 @section('content')
-<div class="mb-8"><h1 class="text-3xl font-bold text-navy dark:text-white">{{ isset($temoignage) ? 'Modifier' : 'Nouveau' }} témoignage</h1></div>
-<form action="{{ isset($temoignage) ? route('admin.temoignages.update', $temoignage) : route('admin.temoignages.store') }}" method="POST" enctype="multipart/form-data" class="bg-white dark:bg-gray-800 rounded-xl p-8 card-shadow max-w-2xl">
+<div class="mb-8"><h1 class="admin-page-title">{{ isset($temoignage) ? 'Modifier' : 'Nouveau' }} témoignage</h1></div>
+<form action="{{ isset($temoignage) ? route('admin.temoignages.update', $temoignage) : route('admin.temoignages.store') }}" method="POST" enctype="multipart/form-data" class="form-card max-w-2xl">
     @csrf @if(isset($temoignage)) @method('PUT') @endif
     <div class="space-y-6">
         <div><label class="form-label">Nom *</label><input type="text" name="name" value="{{ old('name', $temoignage->name ?? '') }}" class="form-input" required></div>

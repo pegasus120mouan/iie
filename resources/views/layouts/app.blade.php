@@ -20,7 +20,7 @@
     <main>
         @if(session('success'))
             <div class="container mx-auto px-4 pt-6">
-                <div class="flex items-start gap-3 bg-green-50 border border-green-200 text-green-800 px-5 py-4 rounded-xl shadow-sm" role="alert">
+                <div class="alert-success" role="alert">
                     <i class="fas fa-check-circle text-green-600 mt-0.5"></i>
                     <p class="text-sm font-medium">{{ session('success') }}</p>
                 </div>
