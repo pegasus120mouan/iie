@@ -1,0 +1,325 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+
+    /* Charte IIE — inspirée du logo */
+    --color-navy: #1B5FBD;
+    --color-navy-light: #3B7FD4;
+    --color-navy-dark: #144A96;
+    --color-primary: #1B5FBD;
+    --color-primary-light: #E8F2FC;
+    --color-primary-soft: #F4F8FD;
+
+    --color-gold: #C9A227;
+    --color-gold-light: #E8C84A;
+    --color-gold-dark: #A8861A;
+    --color-gold-soft: #FBF6E8;
+
+    --color-slate: #64748B;
+    --color-slate-dark: #475569;
+    --color-light: #F5F8FC;
+    --color-surface: #FFFFFF;
+}
+
+/* ─── Base ─── */
+body {
+    @apply bg-primary-soft text-slate-dark;
+}
+
+/* ─── Typographie ─── */
+.font-display {
+    font-family: var(--font-display);
+}
+
+.section-title {
+    @apply text-3xl md:text-4xl font-bold text-navy mb-4;
+    font-family: var(--font-display);
+}
+
+.section-subtitle {
+    @apply text-lg text-slate max-w-2xl mx-auto;
+}
+
+.section-label {
+    @apply text-gold font-semibold uppercase tracking-wider text-sm;
+}
+
+/* ─── Cartes & surfaces ─── */
+.card-shadow {
+    box-shadow: 0 4px 24px rgba(27, 95, 189, 0.07);
+}
+
+.card-shadow:hover {
+    box-shadow: 0 8px 32px rgba(27, 95, 189, 0.12);
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(27, 95, 189, 0.08);
+}
+
+.glass-card {
+    @apply bg-white rounded-2xl border border-primary/10;
+    box-shadow: 0 8px 32px rgba(27, 95, 189, 0.1);
+}
+
+/* ─── Boutons ─── */
+.btn-gold {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-gold text-white font-semibold rounded-lg transition-all duration-300 hover:bg-gold-light hover:shadow-lg hover:-translate-y-0.5;
+}
+
+.btn-navy {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-navy text-white font-semibold rounded-lg transition-all duration-300 hover:bg-navy-light hover:shadow-lg hover:-translate-y-0.5;
+}
+
+.btn-outline-gold {
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-gold text-gold-dark font-semibold rounded-lg transition-all duration-300 hover:bg-gold hover:text-white;
+}
+
+.btn-outline-navy {
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-navy text-navy font-semibold rounded-lg transition-all duration-300 hover:bg-navy hover:text-white;
+}
+
+/* ─── Hero slider ─── */
+.hero-slide {
+    background-size: cover;
+    background-position: center;
+    min-height: 85vh;
+}
+
+/* ─── Page hero (pages intérieures) ─── */
+.page-hero {
+    @apply bg-gradient-to-br from-primary-light via-white to-gold-soft text-navy;
+    border-bottom: 1px solid rgba(27, 95, 189, 0.1);
+}
+
+.page-hero h1 {
+    font-family: var(--font-display);
+}
+
+/* ─── Header ─── */
+.header-sticky {
+    @apply fixed top-0 left-0 right-0 z-50 transition-all duration-300;
+}
+
+.header-topbar {
+    @apply bg-primary text-white text-sm border-b border-white/10;
+}
+
+.header-main {
+    @apply bg-white/95 backdrop-blur-md border-b border-primary/10 text-slate-dark;
+}
+
+.header-scrolled .header-main,
+.header-sticky:not(.header-transparent) .header-main {
+    @apply bg-white shadow-md;
+}
+
+.header-transparent .header-main {
+    @apply bg-white/80 backdrop-blur-md;
+}
+
+.nav-link {
+    @apply font-medium text-slate-dark hover:text-navy transition;
+}
+
+.nav-link-active {
+    @apply text-navy font-semibold;
+}
+
+/* ─── Mega menu ─── */
+.mega-menu-panel {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    z-index: 60;
+    width: min(72rem, calc(100vw - 2rem));
+    padding-top: 0.75rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(0.5rem);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+.group:hover .mega-menu-panel,
+.mega-menu-panel:hover {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+.mega-menu-card {
+    @apply bg-white rounded-2xl p-6 border border-primary/10;
+    box-shadow: 0 16px 48px rgba(27, 95, 189, 0.15);
+}
+
+/* ─── Footer ─── */
+.site-footer {
+    @apply bg-white border-t border-primary/10 text-slate-dark;
+}
+
+.site-footer-heading {
+    @apply text-navy font-semibold text-lg mb-6;
+    font-family: var(--font-display);
+}
+
+/* ─── Sections alternées ─── */
+.section-light {
+    @apply bg-white;
+}
+
+.section-alt {
+    @apply bg-primary-soft;
+}
+
+.section-stats {
+    @apply bg-gradient-to-r from-primary-light via-white to-gold-soft;
+}
+
+.section-cta {
+    @apply bg-gradient-to-br from-navy to-navy-light text-white;
+}
+
+/* ─── Cartes formation / actualité ─── */
+.card-media {
+    @apply bg-gradient-to-br from-navy to-navy-light flex items-center justify-center;
+}
+
+.stat-number {
+    @apply text-4xl md:text-5xl font-bold text-navy;
+    font-family: var(--font-display);
+}
+
+.stat-badge {
+    @apply bg-white rounded-xl p-6 border border-primary/10;
+    box-shadow: 0 8px 24px rgba(27, 95, 189, 0.12);
+}
+
+.testimonial-card {
+    @apply bg-white rounded-2xl p-6 relative border border-primary/5;
+    box-shadow: 0 4px 24px rgba(27, 95, 189, 0.07);
+}
+
+/* ─── Formulaires ─── */
+.form-input {
+    @apply w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-navy/30 focus:border-navy outline-none transition-all text-slate-dark;
+}
+
+.form-label {
+    @apply block text-sm font-medium text-slate-dark mb-1;
+}
+
+/* ─── Logo ─── */
+.logo-header__img,
+.logo-footer__img,
+.logo-admin__img,
+.logo-default__img {
+    width: auto;
+    object-fit: contain;
+    object-position: left center;
+}
+
+.logo-header__img {
+    height: 5.5rem;
+    max-width: min(92vw, 22rem);
+}
+
+@media (min-width: 640px) {
+    .logo-header__img {
+        height: 7rem;
+        max-width: min(90vw, 28rem);
+    }
+}
+
+@media (min-width: 1024px) {
+    .logo-header__img {
+        height: 8.5rem;
+        max-width: 32rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .logo-header__img {
+        height: 10rem;
+        max-width: 36rem;
+    }
+}
+
+.logo-footer__img {
+    height: 6rem;
+    max-width: 28rem;
+}
+
+@media (min-width: 768px) {
+    .logo-footer__img {
+        height: 7.5rem;
+        max-width: 32rem;
+    }
+}
+
+.logo-admin__img {
+    height: 3.5rem;
+    max-width: 14rem;
+}
+
+.logo-admin--login .logo-admin__img {
+    height: 6rem;
+    max-width: 24rem;
+}
+
+.logo-default__img {
+    height: 5rem;
+    max-width: 20rem;
+}
+
+/* ─── Filtres (actualités, galerie) ─── */
+.filter-bar {
+    @apply bg-white border-y border-primary/10 py-6;
+}
+
+.filter-pill {
+    @apply inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200;
+    @apply bg-white text-navy border-2 border-primary/20 shadow-sm;
+}
+
+.filter-pill:hover {
+    @apply bg-primary-light border-navy/40;
+}
+
+.filter-pill-active {
+    @apply bg-navy text-white border-navy shadow-md;
+}
+
+.filter-pill-active:hover {
+    @apply bg-navy-light border-navy-light;
+}
+
+/* ─── Admin ─── */
+.admin-sidebar {
+    @apply w-64 bg-navy min-h-screen fixed left-0 top-0 text-white;
+}
+
+.admin-content {
+    @apply ml-64 p-8 min-h-screen bg-primary-soft;
+}
+
+/* ─── Animations ─── */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
