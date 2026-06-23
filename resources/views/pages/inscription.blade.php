@@ -13,6 +13,7 @@
   <div class="container mx-auto px-4 max-w-3xl">
     <form action="{{ route('inscription.store') }}" method="POST" class="form-card" data-aos="fade-up">
       @csrf
+      <x-honeypot />
 
       <div class="mb-8 pb-6 border-b border-primary/10">
         <h2 class="content-heading-sm">Informations personnelles</h2>

@@ -27,8 +27,10 @@ Route::get('/formations', [FormationController::class, 'index'])->name('formatio
 Route::get('/formations/{slug}', [FormationController::class, 'show'])->name('formations.show');
 
 Route::get('/inscription', [InscriptionController::class, 'create'])->name('inscription.create');
-Route::post('/inscription', [InscriptionController::class, 'store'])->name('inscription.store');
-Route::get('/inscription/succes/{numero}', [InscriptionController::class, 'success'])->name('inscription.success');
+Route::post('/inscription', [InscriptionController::class, 'store'])->middleware('throttle:forms')->name('inscription.store');
+Route::get('/inscription/succes/{numero}', [InscriptionController::class, 'success'])
+    ->middleware('signed')
+    ->name('inscription.success');
 
 Route::get('/actualites', [ActualiteController::class, 'index'])->name('actualites.index');
 Route::get('/actualites/{slug}', [ActualiteController::class, 'show'])->name('actualites.show');
@@ -36,12 +38,12 @@ Route::get('/actualites/{slug}', [ActualiteController::class, 'show'])->name('ac
 Route::get('/galerie', [GalerieController::class, 'index'])->name('galerie');
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:forms')->name('contact.store');
 
 // Admin routes
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AdminAuthController::class, 'login'])->name('login.post');
+    Route::post('/login', [AdminAuthController::class, 'login'])->middleware('throttle:login')->name('login.post');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
     Route::middleware(AdminMiddleware::class)->group(function () {

@@ -23,7 +23,6 @@ class InscriptionResource extends JsonResource
             'email' => $this->email,
             'adresse' => $this->adresse,
             'niveau_etude' => $this->niveau_etude,
-            'notes' => $this->notes,
             'formation' => $this->whenLoaded('formation', fn () => [
                 'id' => $this->formation->id,
                 'nom' => $this->formation->name,

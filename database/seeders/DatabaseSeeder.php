@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'Administrateur IIE',
-            'email' => 'admin@iie.edu',
-            'password' => Hash::make('password'),
+            'email' => env('ADMIN_EMAIL', 'admin@iie.edu'),
+            'password' => Hash::make(env('ADMIN_PASSWORD', 'password')),
             'role_id' => $adminRole->id,
             'is_active' => true,
         ]);

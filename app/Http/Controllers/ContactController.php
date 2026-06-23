@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ContactReceived;
 use App\Models\Contact;
+use App\Support\Honeypot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -16,6 +17,10 @@ class ContactController extends Controller
 
     public function store(Request $request)
     {
+        if (Honeypot::isBot($request)) {
+            return back()->with('success', 'Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.');
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',

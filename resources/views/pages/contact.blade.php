@@ -17,6 +17,7 @@
         <h2 class="section-title mt-2">Envoyez-nous un message</h2>
         <form action="{{ route('contact.store') }}" method="POST" class="form-card mt-8 space-y-6">
           @csrf
+          <x-honeypot />
           <div class="grid md:grid-cols-2 gap-6">
             <div>
               <label class="form-label">Nom *</label>

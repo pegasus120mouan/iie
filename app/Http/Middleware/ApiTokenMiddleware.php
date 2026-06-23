@@ -19,10 +19,9 @@ class ApiTokenMiddleware
         }
 
         $provided = $request->bearerToken()
-            ?? $request->header('X-API-Token')
-            ?? $request->query('api_token');
+            ?? $request->header('X-API-Token');
 
-        if (! is_string($provided) || ! hash_equals($token, $provided)) {
+        if (! is_string($provided) || $provided === '' || ! hash_equals($token, $provided)) {
             return response()->json([
                 'message' => 'Token API invalide ou manquant.',
             ], 401);

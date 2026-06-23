@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Actualite;
+use App\Support\HtmlSanitizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -78,6 +79,7 @@ class ActualiteController extends Controller
 
         $validated['is_published'] = $request->boolean('is_published', true);
         $validated['is_featured'] = $request->boolean('is_featured');
+        $validated['content'] = HtmlSanitizer::clean($validated['content']);
 
         return $validated;
     }

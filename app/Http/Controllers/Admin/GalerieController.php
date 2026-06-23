@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Galerie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class GalerieController extends Controller
 {
@@ -40,6 +41,7 @@ class GalerieController extends Controller
         $validated = $this->validateGalerie($request, false);
 
         if ($request->hasFile('file')) {
+            $this->deleteFile($galerie->file_path);
             $validated['file_path'] = $request->file('file')->store('galeries', 'public');
         }
 
@@ -50,6 +52,7 @@ class GalerieController extends Controller
 
     public function destroy(Galerie $galerie)
     {
+        $this->deleteFile($galerie->file_path);
         $galerie->delete();
 
         return redirect()->route('admin.galeries.index')->with('success', 'Élément supprimé.');
@@ -57,9 +60,16 @@ class GalerieController extends Controller
 
     private function validateGalerie(Request $request, bool $requireFile = true): array
     {
+        $type = $request->input('type', 'photo');
+
+        $fileRules = match ($type) {
+            'video' => ['file', 'mimes:mp4,webm', 'max:20480'],
+            default => ['file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+        };
+
         $rules = [
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:2000',
             'type' => 'required|in:photo,video',
             'category' => 'nullable|string|max:100',
             'is_active' => 'boolean',
@@ -67,14 +77,21 @@ class GalerieController extends Controller
         ];
 
         if ($requireFile) {
-            $rules['file'] = 'required|file|max:10240';
+            $rules['file'] = array_merge(['required'], $fileRules);
         } else {
-            $rules['file'] = 'nullable|file|max:10240';
+            $rules['file'] = array_merge(['nullable'], $fileRules);
         }
 
         $validated = $request->validate($rules);
         $validated['is_active'] = $request->boolean('is_active', true);
 
         return $validated;
+    }
+
+    private function deleteFile(?string $path): void
+    {
+        if ($path && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
     }
 }
