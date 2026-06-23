@@ -26,11 +26,11 @@
           <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'nav-link-active' : '' }}">Accueil</a>
           <a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'nav-link-active' : '' }}">À propos</a>
 
-          <div class="relative group">
-            <a href="{{ route('formations.index') }}" class="nav-link flex items-center gap-1 {{ request()->routeIs('formations.*') ? 'nav-link-active' : '' }}">
-              Formations <i class="fas fa-chevron-down text-xs transition-transform group-hover:rotate-180"></i>
+          <div class="mega-menu-wrapper" id="mega-menu-wrapper">
+            <a href="{{ route('formations.index') }}" class="nav-link flex items-center gap-1 {{ request()->routeIs('formations.*') ? 'nav-link-active' : '' }}" id="mega-menu-trigger" aria-haspopup="true" aria-expanded="false">
+              Formations <i class="fas fa-chevron-down text-xs mega-menu-chevron"></i>
             </a>
-            <div class="mega-menu-panel">
+            <div class="mega-menu-panel" id="mega-menu-panel" role="menu">
               <div class="mega-menu-card">
                 <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-x-8 gap-y-6">
                   @foreach($categories as $cat)
@@ -77,7 +77,26 @@
         <div class="flex flex-col gap-3">
           <a href="{{ route('home') }}" class="py-2 nav-link">Accueil</a>
           <a href="{{ route('about') }}" class="py-2 nav-link">À propos</a>
-          <a href="{{ route('formations.index') }}" class="py-2 nav-link">Formations</a>
+          <div>
+            <button type="button" id="mobile-formations-toggle" class="w-full flex items-center justify-between py-2 nav-link" aria-expanded="false">
+              Formations <i class="fas fa-chevron-down text-xs transition-transform" id="mobile-formations-chevron"></i>
+            </button>
+            <div id="mobile-formations-menu" class="hidden pl-4 mt-2 space-y-4 border-l-2 border-primary/20">
+              @foreach($categories as $cat)
+                <div>
+                  <p class="text-navy font-semibold text-sm mb-2">{{ $cat->name }}</p>
+                  <ul class="space-y-1">
+                    @foreach($cat->formations as $formation)
+                      <li>
+                        <a href="{{ route('formations.show', $formation->slug) }}" class="block py-1 text-sm text-slate hover:text-navy">{{ $formation->name }}</a>
+                      </li>
+                    @endforeach
+                  </ul>
+                </div>
+              @endforeach
+              <a href="{{ route('formations.index') }}" class="block py-2 text-sm font-semibold text-navy">Voir toutes les formations →</a>
+            </div>
+          </div>
           <a href="{{ route('actualites.index') }}" class="py-2 nav-link">Actualités</a>
           <a href="{{ route('galerie') }}" class="py-2 nav-link">Galerie</a>
           <a href="{{ route('contact') }}" class="py-2 nav-link">Contact</a>

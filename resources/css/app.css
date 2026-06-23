@@ -108,7 +108,8 @@ body {
 
 /* ─── Header ─── */
 .header-sticky {
-    @apply fixed top-0 left-0 right-0 z-50 transition-all duration-300;
+    @apply fixed top-0 left-0 right-0 z-[100] transition-all duration-300;
+    overflow: visible;
 }
 
 .header-topbar {
@@ -117,6 +118,14 @@ body {
 
 .header-main {
     @apply bg-white/95 backdrop-blur-md border-b border-primary/10 text-slate-dark;
+    overflow: visible;
+}
+
+.header-main nav,
+.header-main .container,
+.header-main .flex.items-center.justify-between,
+.mega-menu-wrapper {
+    overflow: visible;
 }
 
 .header-scrolled .header-main,
@@ -137,26 +146,49 @@ body {
 }
 
 /* ─── Mega menu ─── */
+.mega-menu-wrapper {
+    position: relative;
+}
+
 .mega-menu-panel {
     position: absolute;
     top: 100%;
     left: 50%;
-    z-index: 60;
+    z-index: 9999;
     width: min(72rem, calc(100vw - 2rem));
-    padding-top: 0.75rem;
+    padding-top: 0.5rem;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translateX(-50%) translateY(0.5rem);
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    transform: translateX(-50%) translateY(0.25rem);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
 }
 
-.group:hover .mega-menu-panel,
+/* Pont invisible entre le lien et le panneau (évite la fermeture au survol) */
+.mega-menu-panel::before {
+    content: '';
+    position: absolute;
+    top: -0.75rem;
+    left: 0;
+    right: 0;
+    height: 0.75rem;
+}
+
+.mega-menu-wrapper:hover .mega-menu-panel,
+.mega-menu-wrapper.is-open .mega-menu-panel,
 .mega-menu-panel:hover {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
     transform: translateX(-50%) translateY(0);
+}
+
+.mega-menu-wrapper.is-open .mega-menu-chevron {
+    transform: rotate(180deg);
+}
+
+.mega-menu-chevron {
+    transition: transform 0.2s ease;
 }
 
 .mega-menu-card {

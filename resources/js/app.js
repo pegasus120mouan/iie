@@ -21,6 +21,64 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileMenu?.classList.toggle('hidden');
     });
 
+    // Mega menu desktop — clic + survol
+    const megaWrapper = document.getElementById('mega-menu-wrapper');
+    const megaTrigger = document.getElementById('mega-menu-trigger');
+    const megaPanel = document.getElementById('mega-menu-panel');
+    let megaCloseTimer = null;
+
+    const openMegaMenu = () => {
+        clearTimeout(megaCloseTimer);
+        megaWrapper?.classList.add('is-open');
+        megaTrigger?.setAttribute('aria-expanded', 'true');
+    };
+
+    const closeMegaMenu = () => {
+        megaCloseTimer = setTimeout(() => {
+            megaWrapper?.classList.remove('is-open');
+            megaTrigger?.setAttribute('aria-expanded', 'false');
+        }, 150);
+    };
+
+    megaWrapper?.addEventListener('mouseenter', openMegaMenu);
+    megaWrapper?.addEventListener('mouseleave', closeMegaMenu);
+
+    megaTrigger?.addEventListener('click', (event) => {
+        if (window.innerWidth < 1024) {
+            return;
+        }
+
+        if (!megaWrapper?.classList.contains('is-open')) {
+            event.preventDefault();
+            openMegaMenu();
+        }
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!megaWrapper?.contains(event.target)) {
+            megaWrapper?.classList.remove('is-open');
+            megaTrigger?.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            megaWrapper?.classList.remove('is-open');
+            megaTrigger?.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    // Mega menu mobile
+    const mobileFormationsToggle = document.getElementById('mobile-formations-toggle');
+    const mobileFormationsMenu = document.getElementById('mobile-formations-menu');
+    const mobileFormationsChevron = document.getElementById('mobile-formations-chevron');
+
+    mobileFormationsToggle?.addEventListener('click', () => {
+        const isOpen = mobileFormationsMenu?.classList.toggle('hidden') === false;
+        mobileFormationsToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        mobileFormationsChevron?.classList.toggle('rotate-180', isOpen);
+    });
+
     const slides = document.querySelectorAll('.hero-slider .slide');
     if (slides.length > 1) {
         let current = 0;
